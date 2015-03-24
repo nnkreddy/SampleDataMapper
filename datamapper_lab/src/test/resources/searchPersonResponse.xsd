@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="searchPersonResponse" type="searchPersonResponseType"/>
+  <xs:complexType name="personsType">
+    <xs:sequence>
+      <xs:element type="personType" name="person" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="searchPersonResponseType">
+    <xs:sequence>
+      <xs:element type="personsType" name="persons"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="personType">
+    <xs:sequence>
+      <xs:element name="Fname">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Naveen"/>
+            <xs:enumeration value="Naresh"/>
+            <xs:enumeration value="Bulli"/>
+            <xs:enumeration value="Karthik"/>
+            <xs:enumeration value="Babu"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Mname">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="NaveenM"/>
+            <xs:enumeration value="NareshM"/>
+            <xs:enumeration value="BulliM"/>
+            <xs:enumeration value="KarthikM"/>
+            <xs:enumeration value="BabuM"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Lname">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="NaveenL"/>
+            <xs:enumeration value="NareshL"/>
+            <xs:enumeration value="BulliL"/>
+            <xs:enumeration value="KarthikL"/>
+            <xs:enumeration value="BabuL"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
