@@ -18,7 +18,7 @@ http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/
     </catch-exception-strategy>
     <flow name="datamapper_labFlow" doc:name="datamapper_labFlow">
         <file:inbound-endpoint path="C:\Users\861322\Desktop\MULE\Input" connector-ref="Input" responseTimeout="10000" doc:name="File"/>
-        <logger message="Message is #[payload] and ran at #[server.dateTime.format('HH:mm:ss')]" level="INFO" doc:name="Logger"/>
+        <logger message="Message is #[payload] and ran at #[server.dateTime.format('dd/MM/yy HH:mm:ss')]" level="INFO" doc:name="Logger"/>
         <data-mapper:transform config-ref="CSV_To_XML" doc:name="CSV To XML"/>
    <!--      <byte-array-to-string-transformer doc:name="Byte Array to String"/> -->
         <logger message="hubhjhvfdbhghi #[message.payload]" level="INFO" doc:name="Logger"/>
