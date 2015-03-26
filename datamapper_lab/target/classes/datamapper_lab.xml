@@ -13,7 +13,7 @@ http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/
     <file:connector name="Input" autoDelete="true" streaming="true" validateConnections="true" doc:name="File"/>
     <data-mapper:config name="XML_To_MS_Excel" transformationGraphPath="xml_to_ms_excel.grf" doc:name="XML_To_MS_Excel"/>
   <!--   <file:connector name="File" autoDelete="true" streaming="true" validateConnections="true" doc:name="File"/> -->
-    <catch-exception-strategy name="Catch Exception Strategy">
+    <catch-exception-strategy name="CatchExceptionStrategy">
         <logger message="In Exception!" level="INFO" doc:name="Logger"/>
     </catch-exception-strategy>
     <flow name="datamapper_labFlow" doc:name="datamapper_labFlow">
@@ -25,6 +25,6 @@ http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/
         <data-mapper:transform config-ref="XML_To_MS_Excel" doc:name="XML To MS Excel"/>
         <logger message="After to string conversion #[payload]" level="INFO" doc:name="Logger"/>
         <file:outbound-endpoint path="C:\Users\861322\Desktop\MULE\Output" outputPattern="Excel_Output.xls" responseTimeout="10000" doc:name="File"/>
-        <exception-strategy ref="Catch Exception Strategy" doc:name="Reference Exception Strategy"/>
+        <exception-strategy ref="CatchExceptionStrategy" doc:name="Reference Exception Strategy"/>
         </flow>
 </mule>

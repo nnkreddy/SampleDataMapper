@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="861322" created="Wed Mar 04 12:35:40 IST 2015" description="CSV To XML" guiVersion="3.4.4.P" id="1425460611737" licenseCode="Unlicensed" licenseType="Unknown" modified="Wed Mar 04 12:35:40 IST 2015" modifiedBy="861322" name="CSV_To_XML" preview-file="C:/Users/861322/Desktop/MULE/Input/Datamapper.csv" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __referenceCounter="1" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _type="Input" id="32c59c5c-e2ca-4c55-b71d-9053a338459d">
+<Record fieldDelimiter="," name="Datamapper" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field containerType="SINGLE" label="FirstName" name="FirstName" size="10" type="string"/>
+<Field containerType="SINGLE" label="Middle Name" name="Middle_Name" size="10" type="string"/>
+<Field containerType="SINGLE" eofAsDelimiter="true" label="Last Name" name="Last_Name" size="10" type="string"/>
+<Field __artificialType="_id" auto_filling="global_row_count" name="__id" type="long"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __schemaType="personType" __sourcePath="{}/searchPersonResponse/persons/person" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="8b2b2cbc-ff9b-41c6-aba7-ca49d85a0e7b" _parent_id="__parent_id" _type="Output" id="c9c01ad0-bc51-40dd-95f7-98423a09d27e">
+<Record fieldDelimiter="," name="person" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __schemaType="personType" __sourcePath="{}/searchPersonResponse/persons/person/Fname" containerType="SINGLE" label="Fname" name="Fname" type="string"/>
+<Field __index="1" __schemaType="personType" __sourcePath="{}/searchPersonResponse/persons/person/Mname" containerType="SINGLE" label="Mname" name="Mname" type="string"/>
+<Field __index="2" __schemaType="personType" __sourcePath="{}/searchPersonResponse/persons/person/Lname" containerType="SINGLE" label="Lname" name="Lname" type="string"/>
+</Record>
+</Metadata>
+<Metadata __filteredMetadata="false" __index="0" __referenceCounter="0" __schemaType="searchPersonResponseType" __sourcePath="{}/searchPersonResponse" _dataStructure="OBJECT" _id="__id" _type="Output" id="8b2b2cbc-ff9b-41c6-aba7-ca49d85a0e7b">
+<Record fieldDelimiter="," name="searchPersonResponse" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+</Record>
+</Metadata>
+<Metadata _type="Lookup" id="84237d1b-4695-4505-8c71-787749528877">
+<Record fieldDelimiter="," name="UserDefinedLookup" recordDelimiter="&#10;" type="delimited">
+<Field containerType="SINGLE" label="Name" name="Name" type="string"/>
+<Field containerType="SINGLE" label="EmpId" name="EmpId" type="string"/>
+</Record>
+</Metadata>
+<LookupTable id="UserDefinedLookup" key="Name" metadata="84237d1b-4695-4505-8c71-787749528877" name="UserDefinedLookup" type="simpleLookup">
+<attr name="lookupType"><![CDATA[UserDefined]]></attr>
+<attr name="data"><![CDATA[Naveen,861322
+Karthik,261994
+Naresh,261212
+Bulli,121226
+]]></attr>
+</LookupTable>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="CSV READER" guiX="20" guiY="20" id="DATA_READER0" quoteCharacter="both" quotedStrings="true" skipRows="1" trim="true" type="DATA_READER">
+<attr name="_data_format"><![CDATA[CSV]]></attr>
+<attr name="__dataSourceDefinition"><![CDATA[C:/Users/861322/Desktop/MULE/Input/Datamapper.csv]]></attr>
+</Node>
+<Node cacheInMemory="true" charset="UTF-8" enabled="enabled" fileURL="dict:outputPayload" guiName="XML WRITER" guiX="900" guiY="20" id="EXT_XML_WRITER0" type="EXT_XML_WRITER" xmlSchemaURL="./src/test/resources/searchPersonResponse.xsd">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<searchPersonResponse xmlns:clover="http://www.cloveretl.com/ns/xmlmapping">
+  <persons>
+    <person clover:inPort="0">
+      <Fname>$0.Fname</Fname>
+      <Mname>$0.Mname</Mname>
+      <Lname>$0.Lname</Lname>
+    </person>
+  </persons>
+</searchPersonResponse>]]></attr>
+<attr name="_data_format"><![CDATA[XML]]></attr>
+<attr name="__rootGlobalElementName"><![CDATA[searchPersonResponse]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'Datamapper' -&gt; 'person'" guiX="460" guiY="120" id="FOREACH_DATAMAPPER_PERSON" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = num2str(input.__id);
+output.__parent_id = num2str(input.__id);
+//END -> DO NOT REMOVE
+output.Fname = input.FirstName;
+output.Lname = (isnull(lookup(UserDefinedLookup).get([input.FirstName])) ? null : lookup(UserDefinedLookup).get([input.FirstName]).EmpId);
+output.Mname = input.Middle_Name;]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Simple Copy" guiX="240" guiY="20" id="SIMPLE_COPY0" type="SIMPLE_COPY"/>
+<Edge debugMode="true" fromNode="DATA_READER0:0" guiBendpoints="" id="Edge2" inPort="Port 0 (in)" metadata="32c59c5c-e2ca-4c55-b71d-9053a338459d" outPort="Port 0 (output)" toNode="SIMPLE_COPY0:0"/>
+<Edge debugMode="true" fromNode="FOREACH_DATAMAPPER_PERSON:0" guiBendpoints="" id="Edge4" inPort="Port 0 (in)" metadata="c9c01ad0-bc51-40dd-95f7-98423a09d27e" outPort="Port 0 (out)" toNode="EXT_XML_WRITER0:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:0" guiBendpoints="" id="Edge3" inPort="Port 0 (in)" metadata="32c59c5c-e2ca-4c55-b71d-9053a338459d" outPort="Port 0 (out)" toNode="FOREACH_DATAMAPPER_PERSON:0"/>
+</Phase>
+</Graph>

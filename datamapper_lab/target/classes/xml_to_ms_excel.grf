@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="861322" created="Wed Mar 04 18:59:40 IST 2015" description="XML To MS Excel" guiVersion="3.4.4.P" id="1425476113491" licenseCode="Unlicensed" licenseType="Unknown" modified="Wed Mar 04 18:59:40 IST 2015" modifiedBy="861322" name="XML_To_MS_Excel" preview-file="C:/Users/861322/Desktop/MULE/Output/Output_123.xml" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __referenceCounter="2" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _type="Output" id="8e54b34e-abe5-4977-95fd-556268e2aafe">
+<Record fieldDelimiter="," name="ExcelExample" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __sourcePath="1/0" label="FirstName" name="FirstName" type="string"/>
+<Field __sourcePath="1/1" label="Middle Name" name="Middle_Name" type="string"/>
+<Field __sourcePath="1/2" label="Last Name" name="Last_Name" type="string"/>
+<Field __artificialType="_id" name="__id" type="long"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __schemaType="personType" __sourcePath="{}/searchPersonResponse/persons/person" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="7f6279ce-72a4-4063-8e45-efc42903d84d" _parent_id="__parent_id" _type="Input" id="77e55cbc-843d-4daa-bb89-a1270ff1b7d2">
+<Record fieldDelimiter="," name="person" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __schemaType="personType" __sourcePath="{}/searchPersonResponse/persons/person/Fname" containerType="SINGLE" label="Fname" name="Fname" type="string"/>
+<Field __index="1" __schemaType="personType" __sourcePath="{}/searchPersonResponse/persons/person/Mname" containerType="SINGLE" label="Mname" name="Mname" type="string"/>
+<Field __index="2" __schemaType="personType" __sourcePath="{}/searchPersonResponse/persons/person/Lname" containerType="SINGLE" label="Lname" name="Lname" type="string"/>
+</Record>
+</Metadata>
+<Metadata __filteredMetadata="false" __index="0" __referenceCounter="1" __schemaType="searchPersonResponseType" __sourcePath="{}/searchPersonResponse" _dataStructure="OBJECT" _id="__id" _type="Input" id="7f6279ce-72a4-4063-8e45-efc42903d84d">
+<Record fieldDelimiter="," name="searchPersonResponse" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" guiName="Foreach 'person' -&gt; 'ExcelExample'" guiX="460" guiY="120" id="FOREACH_PERSON_EXCEL_EXAMPLE" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = str2long(input.__id);
+//END -> DO NOT REMOVE
+output.FirstName = input.Fname;
+output.Middle_Name = input.Mname;
+output.Last_Name = input.Lname;]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'searchPersonResponse' -&gt; 'ExcelExample'" guiX="460" guiY="20" id="FOREACH_SEARCH_PERSON_RESPONSE_EXCEL_EXAMPLE" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = str2long(input.__id);
+//END -> DO NOT REMOVE
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Simple Gather" guiX="680" guiY="20" id="SIMPLE_GATHER0" type="SIMPLE_GATHER"/>
+<Node enabled="enabled" existingSheetsActions="DO_NOTHING" fileURL="dict:outputPayload" formatterType="XLS" guiName="MS Excel WRITER" guiX="900" guiY="20" id="SPREADSHEET_WRITER0" type="SPREADSHEET_WRITER" writeMode="OVERWRITE_SHEET_IN_MEMORY">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping>
+    <globalAttributes>
+        <orientation>VERTICAL</orientation>
+        <step>1</step>
+        <writeHeader>true</writeHeader>
+    </globalAttributes>
+    <defaultSkip>1</defaultSkip>
+    <headerGroups>
+        <headerGroup skip="1">
+            <cloverField>FirstName</cloverField>
+            <headerRanges>
+                <headerRange begin="A1"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>Middle_Name</cloverField>
+            <headerRanges>
+                <headerRange begin="B1"/>
+            </headerRanges>
+        </headerGroup>
+        <headerGroup skip="1">
+            <cloverField>Last_Name</cloverField>
+            <headerRanges>
+                <headerRange begin="C1"/>
+            </headerRanges>
+        </headerGroup>
+    </headerGroups>
+</mapping>
+]]></attr>
+<attr name="_data_format"><![CDATA[XLS]]></attr>
+<attr name="__dataSourceDefinition"><![CDATA[C:/Users/861322/Desktop/MULE/Datamapper.xls]]></attr>
+</Node>
+<Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="XML READER" guiX="20" guiY="20" id="XML_READER0" type="XML_READER">
+<attr name="xmlSchemaURL"><![CDATA[./src/test/resources/searchPersonResponse.xsd]]></attr>
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context outPort="0" sequenceField="__id" xpath="/searchPersonResponse">
+  <Context generatedKey="__parent_id" outPort="1" parentKey="__id" sequenceField="__id" xpath="persons/person">
+    <Mapping cloverField="Fname" trim="true" xpath="Fname"/>
+    <Mapping cloverField="Mname" trim="true" xpath="Mname"/>
+    <Mapping cloverField="Lname" trim="true" xpath="Lname"/>
+  </Context>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[XML]]></attr>
+<attr name="__rootGlobalElementName"><![CDATA[searchPersonResponse]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="FOREACH_PERSON_EXCEL_EXAMPLE:0" guiBendpoints="" id="Edge4" inPort="Port 1 (in)" metadata="8e54b34e-abe5-4977-95fd-556268e2aafe" outPort="Port 0 (out)" toNode="SIMPLE_GATHER0:1"/>
+<Edge debugMode="true" fromNode="FOREACH_SEARCH_PERSON_RESPONSE_EXCEL_EXAMPLE:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="8e54b34e-abe5-4977-95fd-556268e2aafe" outPort="Port 0 (out)" toNode="SIMPLE_GATHER0:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_GATHER0:0" guiBendpoints="" id="Edge3" inPort="Port 0 (input)" metadata="8e54b34e-abe5-4977-95fd-556268e2aafe" outPort="Port 0 (out)" toNode="SPREADSHEET_WRITER0:0"/>
+<Edge debugMode="true" fromNode="XML_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="7f6279ce-72a4-4063-8e45-efc42903d84d" outPort="Port 0 (out)" toNode="FOREACH_SEARCH_PERSON_RESPONSE_EXCEL_EXAMPLE:0"/>
+<Edge debugMode="true" fromNode="XML_READER0:1" guiBendpoints="" id="Edge2" inPort="Port 0 (in)" metadata="77e55cbc-843d-4daa-bb89-a1270ff1b7d2" outPort="Port 1 (out)" toNode="FOREACH_PERSON_EXCEL_EXAMPLE:0"/>
+</Phase>
+</Graph>
